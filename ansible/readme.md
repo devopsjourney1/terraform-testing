@@ -12,6 +12,7 @@ ansible --version
 ansible-inventory -i inventory/hosts.yml --graph
 
 
+
 # Copy your id_rsa PRIVATE KEY on the host you will be running Ansible/Jenkins Jobs from
 ```
 vi ~/.ssh/id_rsa
@@ -29,8 +30,10 @@ ssh-copy-id remotehostname
 ```
 
 ansible localhost -i inventory/hosts -m command -a hostname
-ansible-playbook -i ./inventory/localhost -K install-jenkins.yml
+ansible-playbook -i ./inventory/localhost -K install-jenkins.yml --tags "master,agent"
 ansible-playbook all-servers.yml -i inventory/localhost
+
+
 
 sudo flask run --host=0.0.0.0 --port=80
 # ansible-inventory -i hosts --graph  (only works macos maybe linux not wsl)

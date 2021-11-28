@@ -1,5 +1,5 @@
 ---
-- name: Install Jenkins
+- name: Install Jenkins Prerequirements
   hosts: control
   become: true
   tasks:
@@ -11,9 +11,12 @@
       state: latest
       update_cache: yes
     tags: 
-    - master
-    - agent
+    - always
 
+- name: Install Jenkins Master Tasks
+  hosts: master
+  become: true
+  tasks:
   - name: Add apt-key
     shell: wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
     tags: 
@@ -42,3 +45,75 @@
   - debug: msg="Jenkins Admin Password is {{ jenkinsPassword.stdout }}"
     tags: 
     - master
+
+- name: Install Jenkins Agent Tasks
+  hosts: agents
+  become: true
+  tasks:
+  - name: Install Docker
+    apt: 
+      name: 
+      - docker.io
+      state: latest
+      update_cache: yes
+    tags: 
+    - agents
+
+  - name: Ensure group "docker" exists with correct gid
+    ansible.builtin.group:
+      name: docker
+      state: present
+      gid: 1750
+    tags: 
+    - agents
+      
+  - name: create a docker user
+    ansible.builtin.user:
+      name: docker
+      groups: docker
+      append: yes
+    tags: 
+    - agents
+
+  - name: adding existing user to docker group
+    ansible.builtin.user:
+      name: ubuntu
+      groups: docker
+      append: yes
+    tags: 
+    - agents
+
+  - name: Change ownership to docker:docker on docker.sock
+    ansible.builtin.file:
+      path: /var/run/docker.sock
+      owner: docker
+      group: docker
+      mode: '0660'
+    tags: 
+    - agents
+
+  - name: Change ownership to docker:docker on docker.sock
+    ansible.builtin.file:
+      path: /var/run/docker.sock
+      owner: docker
+      group: docker
+      mode: '0660'
+    tags: 
+    - agents
+
+  - name: Ensure group "jenkins" exists
+    ansible.builtin.group:
+      name: jenkins
+      state: present
+    tags: 
+    - agents
+
+  - name: create a jenkins user
+    ansible.builtin.user:
+      name: jenkins
+      groups: 
+      - docker
+      - jenkins
+      append: yes
+    tags: 
+    - agents
