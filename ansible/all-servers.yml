@@ -1,6 +1,6 @@
 ---
 - name: Init Servers
-  hosts: appservers
+  hosts: all
   become: true
   tasks:
 
