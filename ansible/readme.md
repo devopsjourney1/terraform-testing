@@ -11,7 +11,8 @@ ansible --version
 
 ansible-inventory -i inventory/hosts.yml --graph
 
-
+#
+sudo netstat -tulpn 
 
 # Copy your id_rsa PRIVATE KEY on the host you will be running Ansible/Jenkins Jobs from
 ```

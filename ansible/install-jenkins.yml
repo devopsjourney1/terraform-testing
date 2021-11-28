@@ -50,56 +50,6 @@
   hosts: agents
   become: true
   tasks:
-  - name: Install Docker
-    apt: 
-      name: 
-      - docker.io
-      state: latest
-      update_cache: yes
-    tags: 
-    - agents
-
-  - name: Ensure group "docker" exists with correct gid
-    ansible.builtin.group:
-      name: docker
-      state: present
-      gid: 1750
-    tags: 
-    - agents
-      
-  - name: create a docker user
-    ansible.builtin.user:
-      name: docker
-      groups: docker
-      append: yes
-    tags: 
-    - agents
-
-  - name: adding existing user to docker group
-    ansible.builtin.user:
-      name: ubuntu
-      groups: docker
-      append: yes
-    tags: 
-    - agents
-
-  - name: Change ownership to docker:docker on docker.sock
-    ansible.builtin.file:
-      path: /var/run/docker.sock
-      owner: docker
-      group: docker
-      mode: '0660'
-    tags: 
-    - agents
-
-  - name: Change ownership to docker:docker on docker.sock
-    ansible.builtin.file:
-      path: /var/run/docker.sock
-      owner: docker
-      group: docker
-      mode: '0660'
-    tags: 
-    - agents
 
   - name: Ensure group "jenkins" exists
     ansible.builtin.group:
@@ -108,7 +58,7 @@
     tags: 
     - agents
 
-  - name: create a jenkins user
+  - name: Ensure user "jenkins" exists and has the correct groups
     ansible.builtin.user:
       name: jenkins
       groups: 

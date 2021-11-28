@@ -42,7 +42,7 @@ module "control_server" {
   instance_type = var.control_server_instance_type
   server_count = var.control_server_count
   subnet_id = module.network.public_subnets[0]
-  security_group_ids = [module.security.application_sg_id]
+  security_group_ids = [module.security.control_sg_id]
   hostname_prefix = "Control"
 }
 
