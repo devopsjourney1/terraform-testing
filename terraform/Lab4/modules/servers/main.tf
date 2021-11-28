@@ -32,9 +32,8 @@ apt install software-properties-common -y
 add-apt-repository --yes --update ppa:ansible/ansible
 apt install ansible -y
 hostnamectl set-hostname ${var.hostname_prefix}${count.index + 1}
-echo "$(hostname -I) $(hostname)" >> /etc/hosts
 git clone https://github.com/devopsjourney1/terraform-testing /home/ubuntu/devops
-chown -R ubuntu:ubuntu /home/devops
+chown -R ubuntu:ubuntu /home/ubuntu/devops
   EOF
   tags = {
     Name = "${var.hostname_prefix}${count.index + 1}"

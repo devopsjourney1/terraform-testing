@@ -18,7 +18,11 @@ chmod 0600 ~/.ssh/id_rsa
 
 ```
 ssh-keygen -t rsa -b 4096
+cat ~/.ssh/authorized_keys
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
+# How to copy the key to a remote machine
+ssh-copy-id remotehostname
 ```
 
 ansible localhost -i inventory/hosts -m command -a hostname
