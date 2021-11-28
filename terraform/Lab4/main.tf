@@ -45,3 +45,14 @@ module "control_server" {
   security_group_ids = [module.security.application_sg_id]
   hostname_prefix = "Control"
 }
+
+#https://github.com/mlabouardy/terraform-aws-labs/issues/1
+resource "null_resource" "hostfile" {
+  ##Create Masters Inventory
+  provisioner "local-exec" {
+    command =  "echo \"[ec2-master]\" > hosts"
+  }
+  provisioner "local-exec" {
+    command =  "echo 'hello world'"
+  }
+}
