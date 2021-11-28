@@ -11,4 +11,4 @@ app_server_count = 1
 #Control Server Settings
 control_server_ami = "ami-09889d8d54f9e0a0e"
 control_server_instance_type = "t2.micro"
-control_server_count = 1
+control_server_count = 2

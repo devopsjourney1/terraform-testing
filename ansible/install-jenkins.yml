@@ -1,6 +1,6 @@
 ---
-- name: Install Jenkins
-  hosts: master
+- name: Install Jenkins Master
+  hosts: control
   become: true
   tasks:
   - name: Install openjdk and ca-certificates (pre-req for jenkins)
@@ -10,6 +10,9 @@
       - ca-certificates
       state: latest
       update_cache: yes
+      tags: 
+      - master
+      - agent
 
   - name: Add apt-key
     shell: wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
@@ -28,3 +31,16 @@
     register: jenkinsPassword
 
   - debug: msg="Jenkins Admin Password is {{ jenkinsPassword.stdout }}"
+
+
+- name: Install Jenkins Agent
+  hosts: agents
+  become: true
+  tasks:
+  - name: Install openjdk and ca-certificates (pre-req for jenkins)
+    apt: 
+      name: 
+      - openjdk-11-jre
+      - ca-certificates
+      state: latest
+      update_cache: yes

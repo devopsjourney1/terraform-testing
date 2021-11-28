@@ -67,6 +67,12 @@ pipeline {
 }
 
 
+# Remote agents
+sudo useradd -d /var/lib/jenkins jenkins
+ssh-keygen
+ssh-copy-id
+
+
 # Declative vs Scripted Pipelines
 - Same thing, but syntax is different
 - We will use Declarative, as it's easier to start out with.

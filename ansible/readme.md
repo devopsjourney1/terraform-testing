@@ -9,6 +9,9 @@ ansible --version
 ```
 
 
+ansible-inventory -i inventory/hosts.yml --graph
+
+
 # Copy your id_rsa PRIVATE KEY on the host you will be running Ansible/Jenkins Jobs from
 ```
 vi ~/.ssh/id_rsa
