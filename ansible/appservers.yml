@@ -1,0 +1,62 @@
+---
+- name: Init Servers
+  hosts: appservers
+  become: true
+  sudo_user: ubuntu
+  tasks:
+
+  - name: Install Basic server toolset
+    apt: 
+      name: 
+      - curl
+      - docker.io
+      - python3-pip
+      - virtualenv
+      - python3-setuptools
+      state: latest
+      update_cache: yes
+
+  - name: Ensure group "docker" exists with correct gid
+    ansible.builtin.group:
+      name: docker
+      state: present
+      gid: 1750
+
+  - name: create a docker user
+    ansible.builtin.user:
+      name: docker
+      groups: docker
+      append: yes
+
+  - name: adding existing user to docker group
+    ansible.builtin.user:
+      name: ubuntu
+      groups: docker
+      append: yes
+
+  - name: Change ownership to docker:docker on docker.sock
+    ansible.builtin.file:
+      path: /var/run/docker.sock
+      owner: docker
+      group: docker
+      mode: '0660'
+
+
+
+
+# not required anymore. will manually install, then move it to docker
+# funny because this part was the biggest pain, and docker will completely solve the problem.
+# once we get it working.. put in another dependancy, and show that it breaks
+# sudo flask run --host=0.0.0.0 --port=80
+#  - name: Make sure pip is the latest version
+#    pip:
+#      name: pip
+#      # I needed to add in pip3 execable parameter. this did not work for ubuntu 16
+#      executable: pip3
+#      state: forcereinstall
+#      
+#  - name: Install latest version of flask python package
+#    pip:
+#      name: flask
+#      executable: pip3
+#      state: latest

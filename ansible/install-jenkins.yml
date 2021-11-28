@@ -1,0 +1,30 @@
+---
+- name: Install Jenkins
+  hosts: master
+  become: true
+  tasks:
+  - name: Install openjdk and ca-certificates (pre-req for jenkins)
+    apt: 
+      name: 
+      - openjdk-11-jre
+      - ca-certificates
+      state: latest
+      update_cache: yes
+
+  - name: Add apt-key
+    shell: wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+
+  - name: Add a Jenkins apt repository entry
+    shell: sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+
+  - name: Install Jenkins
+    apt: 
+      name: jenkins
+      state: latest
+      update_cache: yes
+  
+  - name: Waits for Jenkins service to start and returns Admin password
+    shell: sleep 30 && cat /var/lib/jenkins/secrets/initialAdminPassword
+    register: jenkinsPassword
+
+  - debug: msg="Jenkins Admin Password is {{ jenkinsPassword.stdout }}"
