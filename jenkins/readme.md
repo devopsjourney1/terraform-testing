@@ -3,6 +3,32 @@
 https://www.jenkins.io/doc/book/installing/linux/
 - went through the jenkins installation and figured out what was needed. then created a playbook
 
+
+# DOcker installation
+
+docker-file.yml
+```
+version: "3.5"
+services:
+    jenkins:
+        container_name: jenkins-docker
+        image: jenkins/jenkins:lts
+        ports:
+            - 8080:8080
+        networks:
+            - jenkinsnetwork
+networks:
+    jenkinsnetwork:
+```
+
+```
+docker network create -d bridge devnetwork
+docker-compose config
+docker exec -it jenkins-docker bash
+docker exec -it jenkins-docker cat /var/jenkins_home/secrets/initialAdminPassword
+```
+
+
 ```
 ansible-playbook -i ../inventories/hosts -K install-jenkins.yml
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
@@ -65,6 +91,11 @@ pipeline {
         }
     }
 }
+
+# Plugins
+Install these plugins:
+Docker plugin
+Docker Pipeline
 
 
 # Remote agents

@@ -38,3 +38,10 @@ ansible-playbook all-servers.yml -i inventory/localhost
 
 sudo flask run --host=0.0.0.0 --port=80
 # ansible-inventory -i hosts --graph  (only works macos maybe linux not wsl)
+
+
+
+# Using roles
+ansible-galaxy install geerlingguy.swap
+
+ansible-playbook add-swap.yml -i inventory/localhost

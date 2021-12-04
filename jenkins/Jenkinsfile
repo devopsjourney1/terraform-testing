@@ -1,21 +1,26 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Checkout Code') {
             steps {
-                echo 'Building..'
-                sh "docker info"
-                sh "docker ps"
+                git(url: 'https://github.com/devopsjourney1/terraform-testing', branch: 'master')
+                sh 'docker build -t mywebapp:${BUILD_NUMBER} docker/docker_app1/.'
             }
         }
-        stage('Test') {
+        stage('Build Docker image') {
+            agent {
+                docker {
+                    image 'mywebapp:${BUILD_NUMBER}'
+                }    
+            }
             steps {
-                echo 'Testing..'
+                sh 'python --version'
+                sh 'pip --version'
             }
         }
-        stage('Deploy') {
+        stage('Test App') {             
             steps {
-                echo 'Deploying....'
+                sh 'curl localhost'
             }
         }
     }
