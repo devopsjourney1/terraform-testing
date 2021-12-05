@@ -74,6 +74,38 @@ https://www.jenkins.io/doc/book/managing/
 -> managing plugins
 -> ssh key management
 
+
+
+# Docker CI/CD
+
+
+docker stop $(docker ps -a | grep -i mywebapp | awk '{ print $1 }') || true
+docker rm $(docker ps -a | grep -i mywebapp | awk '{ print $1 }') || true
+
+docker build -t mywebapp:${BUILD_NUMBER} docker/docker_app1/.
+
+docker run --publish 80:5000 -d mywebapp:${BUILD_NUMBER}
+
+sleep 5
+curl -i localhost | grep HTTP 
+
+
+if [ $(curl -s -i localhost | grep HTTP | awk '{ print $2 }' | bc) -lt 401 ]
+then
+  echo 'Working'
+else
+  echo 'Getting an HTTP error code. Quiting.'
+  exit 1
+fi
+
+
+docker tag mywebapp:${BUILD_NUMBER} devopsjourney1/mywebapp:prod
+
+echo ${dockerhubpassword} | docker login --username ${dockerhubusername} --password-stdin
+
+
+
+
 ## SSH Key Management
 pipeline {
     agent {

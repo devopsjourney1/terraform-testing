@@ -17,3 +17,4 @@ curl -I localhost:5000/bad
 reboot server with ansible
 docker build -t mywebapp .
 docker run --publish 80:5000 mywebapp:latest
+docker exec 69a4e3ff6652 'apk list'
