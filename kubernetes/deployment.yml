@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mywebapp
+  labels:
+    app: microservices
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    name: flask
+  selector:
+    app: mywebapp
+    env: prod
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mypod
+  labels:
+    app: mywebapp
+    env: prod
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      env: prod
+  template:
+    metadata:
+      labels:
+        app: mywebapp
+        env: prod
+    spec: # Pod spec
+      containers:
+      - name: mycontainer
+        image: devopsjourney1/mywebapp:prod
+        resources:
+          requests:
+            memory: "16Mi" # mebibytes
+            cpu: "50m"    # 500milliCPUs (1/2 CPU)
+          limits:
+            memory: "16Mi"
+            cpu: "100m"
+        ports:
+          - containerPort: 5000

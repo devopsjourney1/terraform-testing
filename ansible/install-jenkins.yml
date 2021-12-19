@@ -1,6 +1,6 @@
 ---
 - name: Install Jenkins Prerequirements
-  hosts: control
+  hosts: all
   become: true
   tasks:
   - name: Install openjdk and ca-certificates (pre-req for jenkins)
@@ -8,6 +8,7 @@
       name: 
       - openjdk-11-jre
       - ca-certificates
+      - python-apt
       state: latest
       update_cache: yes
     tags: 

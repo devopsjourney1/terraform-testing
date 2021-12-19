@@ -103,7 +103,7 @@ docker tag mywebapp:${BUILD_NUMBER} devopsjourney1/mywebapp:prod
 
 echo ${dockerhubpassword} | docker login --username ${dockerhubusername} --password-stdin
 
-
+docker push devopsjourney1/mywebapp:prod
 
 
 ## SSH Key Management
