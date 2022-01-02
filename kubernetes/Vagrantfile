@@ -3,9 +3,22 @@ Vagrant.configure("2") do |config|
     config.vm.box = "bento/ubuntu-18.04"
     config.vm.hostname = "minikube"
     config.vm.network "private_network", ip: "172.16.1.15"
+    #Jenkins
     config.vm.network "forwarded_port", guest: 8080, host: 8080
+    #Prometheus - Server
+    config.vm.network "forwarded_port", guest: 9090, host: 9090
+    #Prometheus - Node Exporter
+    config.vm.network "forwarded_port", guest: 9100, host: 9100
+    #Prometheus - Alert Manager
+    config.vm.network "forwarded_port", guest: 9093, host: 9093
+    # Grafana
+    config.vm.network "forwarded_port", guest:3000, host: 3000
+    #Kibana
+    config.vm.network "forwarded_port", guest:5601, host: 5601
+    #Filebeats
+    config.vm.network "forwarded_port", guest:5044, host: 5044
     config.vm.provider "virtualbox" do |v|
-      v.customize ["modifyvm", :id, "--memory", 4096]
+      v.customize ["modifyvm", :id, "--memory", 8192]
       v.customize ["modifyvm", :id, "--cpus", 2]
     end
   end

@@ -4,6 +4,8 @@
 # Tightly integrated with CI/CD
 # CI CD to lint code, build docker image, run a test.
 
+docker run hello-world
+
 sudo apt install python3-flask
 export FLASK_APP=app.py
 flask run

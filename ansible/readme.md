@@ -31,7 +31,7 @@ ssh-copy-id remotehostname
 ```
 
 ansible localhost -i inventory/hosts -m command -a hostname
-ansible-playbook -i ./inventory/localhost -K install-jenkins.yml --tags "master,agent"
+ansible-playbook -i ./inventory/localhost -K install-jenkins.yml --tags "master,agents"
 ansible-playbook all-servers.yml -i inventory/localhost
 
 

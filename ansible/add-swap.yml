@@ -1,4 +1,5 @@
 ---
+#Must install the galaxy role: ```ansible-galaxy install geerlingguy.swap```
 - name: Add Swapspace to Servers
   hosts: all
   become: true
